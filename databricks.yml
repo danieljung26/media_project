@@ -1,0 +1,35 @@
+# This is a Databricks asset bundle definition for media_project.
+bundle:
+  name: media_project
+  uuid: 9f7492cd-0de4-4dff-85a9-7ce380326fc4
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-7405615717451689.9.azuredatabricks.net
+    variables:
+      catalog: media
+      schema: ${workspace.current_user.short_name}
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-7405615717451689.9.azuredatabricks.net
+      root_path: /Workspace/Users/djjungg@djjungggmail.onmicrosoft.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: media
+      schema: prod
+    permissions:
+      - user_name: djjungg@djjungggmail.onmicrosoft.com
+        level: CAN_MANAGE
